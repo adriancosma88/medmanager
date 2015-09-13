@@ -1,0 +1,9 @@
+create table patients(
+patientId integer AUTO_INCREMENT,
+PNC varchar(13),
+name varchar(100),
+dateOfBirth date,
+PRIMARY KEY (patientId)
+);
+
+alter table patients add constraint PNC_unique unique(PNC);
