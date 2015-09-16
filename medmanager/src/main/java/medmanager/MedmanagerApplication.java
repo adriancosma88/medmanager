@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import data.repository.PatientRepository;
 import domain.Patient;
 
 @SpringBootApplication
@@ -23,7 +24,7 @@ public class MedmanagerApplication implements CommandLineRunner {
     
     @Override
     public void run(String... arg0) throws Exception {
-    	Patient p1 = new Patient();    	
+    	Patient p1 = new Patient();
     	p1.setFirstName("Adrian");
     	p1.setLastName("Cosma");
     	p1.setPnc("187210008337722");

@@ -1,4 +1,4 @@
-package medmanager;
+package data.repository;
 
 import java.util.List;
 
@@ -10,6 +10,4 @@ public interface PatientRepository extends JpaRepository<Patient, Long>{
 	List<Patient> findByLastName (String lastName);
 	
 	List<Patient> findAll();
-	
-	Patient save ( Patient patient);
 }
