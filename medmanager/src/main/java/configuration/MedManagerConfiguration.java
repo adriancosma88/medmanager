@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@ComponentScan ({"controller.menu", "medmanager", "data.repository"})
+@ComponentScan ({"controller.*", "medmanager"})
 @EntityScan ({"domain"})
 @EnableJpaRepositories ("data.repository")
 public class MedManagerConfiguration {

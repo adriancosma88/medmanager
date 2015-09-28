@@ -1,5 +1,7 @@
 package medmanager;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -7,8 +9,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
+import scala.annotation.meta.setter;
 import data.repository.PatientRepository;
+import data.repository.UserRepository;
 import domain.Patient;
+import domain.security.User;
 
 @SpringBootApplication
 @Configuration
@@ -17,6 +22,9 @@ public class MedmanagerApplication implements CommandLineRunner {
 	
 	@Autowired
 	private PatientRepository patientRepo;
+	
+	@Autowired
+	private UserRepository userRepo;
 
     public static void main(String[] args) {
         SpringApplication.run(MedmanagerApplication.class, args);
@@ -42,6 +50,18 @@ public class MedmanagerApplication implements CommandLineRunner {
     	patientRepo.save(p1);
     	patientRepo.save(p2);
     	patientRepo.save(p3);
+    	
+    	User u1 = new User();
+    	u1.setUserName("cosma");
+    	u1.setPassword("a");
+    	u1.setAdmin(true);
+    	
+    	User u2 = new User();
+    	u2.setUserName("adrian");
+    	u2.setPassword("a");
+    	u2.setAdmin(false);
+    	
+    	userRepo.save(Arrays.asList(u1, u2));
     	
     	for (Patient patient : patientRepo.findAll()) {
     		System.out.println(patient);
