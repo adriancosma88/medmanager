@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @Configuration
 @ComponentScan ({"controller.*", "medmanager"})
 @EntityScan ({"domain"})
-@EnableJpaRepositories ("data.repository")
+@EnableJpaRepositories ("data.repository") 
 public class MedManagerConfiguration {
 	@Bean
     ServletRegistrationBean h2servletRegistration() {

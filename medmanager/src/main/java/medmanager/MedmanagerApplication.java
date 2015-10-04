@@ -9,10 +9,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
-import scala.annotation.meta.setter;
 import data.repository.PatientRepository;
 import data.repository.UserRepository;
 import domain.Patient;
+import domain.Patient.Gender;
 import domain.security.User;
 
 @SpringBootApplication
@@ -36,16 +36,19 @@ public class MedmanagerApplication implements CommandLineRunner {
     	p1.setFirstName("Adrian");
     	p1.setLastName("Cosma");
     	p1.setPnc("187210008337722");
+    	p1.setGender(Gender.MALE);
     	
     	Patient p2 = new Patient();    	
     	p2.setFirstName("Vasilica");
     	p2.setLastName("Cosma");
     	p2.setPnc("1872100014124124");
+    	p2.setGender(Gender.MALE);
     	
     	Patient p3 = new Patient();    	
     	p3.setFirstName("Emil");
     	p3.setLastName("Racovita");
     	p3.setPnc("1872214214242722");
+    	p3.setGender(Gender.MALE);
     	
     	patientRepo.save(p1);
     	patientRepo.save(p2);

@@ -23,7 +23,7 @@ public class Patient {
 	
 	private Date dateOfBirth;
 	
-	private Gender gender;	
+	private String gender;	
 
 	public int getPatientId() {
 		return patientId;
@@ -66,11 +66,11 @@ public class Patient {
 	}
 
 	public Gender getGender() {
-		return gender;
+		return Gender.parse(this.gender);
 	}
 
 	public void setGender(Gender gender) {
-		this.gender = gender;
+		this.gender = gender.getValue();
 	}
 	
 	@Override
@@ -81,7 +81,28 @@ public class Patient {
 	}
 
 	public enum Gender {
-		MALE,
-		FEMALE
+		MALE ("M"),
+		FEMALE ("F");
+		
+		private String genderValue;
+		
+		Gender (String genderValue) {
+			this.genderValue = genderValue;
+		}
+		
+		public String getValue() {
+			return genderValue;
+		}
+		
+		public static Gender parse (String value) {
+			Gender parsedGenger = null;
+			for (Gender gender : values()) {
+				if (gender.getValue().equalsIgnoreCase(value) ) {
+					parsedGenger = gender;
+					break;
+				}
+			}
+			return parsedGenger;
+		}
 	}
 }

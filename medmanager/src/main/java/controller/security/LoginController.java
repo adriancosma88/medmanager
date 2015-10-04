@@ -31,7 +31,7 @@ public class LoginController {
 		
 		if (password.equalsIgnoreCase(user.getPassword())) {
 			model.addAttribute("name", userName);
-			return "mainPage";
+			return "redirect:/patient/list";
 		} else {
 			model.addAttribute("error", "invalid login!");
 			return "login";

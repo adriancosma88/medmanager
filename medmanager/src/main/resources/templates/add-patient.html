@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Add Patient</title>
+    </head>
+    <body>
+        <form th:action="@{/patient/add}" th:object="${patient}" method="post">
+            <div><label> Last Name : <input type="text" name="firstName"/> </label></div>
+            <div><label> First Name : <input type="text" name="lastName"/> </label></div>
+            <div><label> PNC: <input type="text" name="pnc"/> </label></div>
+            <div><input type="submit" value="Add Patient"/></div>
+        </form>
+    </body>
+</html>

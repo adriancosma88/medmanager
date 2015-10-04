@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Patients</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    <table>
+    	<thead>
+    		<tr>
+	    		<th>Patient Name</th>
+	    		<th>CNP</th>
+	    		<th>Gender</th>
+    		</tr>
+    		<tr th:each="patient : ${patients}">
+    			<td th:text="${patient.lastName} + ' ' + ${patient.firstName}">Name FirstName</td>
+    			<td th:text="${patient.pnc}">1888102828043</td>
+    			<td th:text="${patient.gender}">N</td>
+    		</tr>
+    	</thead>
+    </table>
+</body>
+</html>
