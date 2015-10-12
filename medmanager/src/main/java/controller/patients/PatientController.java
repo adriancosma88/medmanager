@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import data.repository.PatientRepository;
 import domain.Patient;
 
+@RequestMapping("/patient")
 @Controller
 public class PatientController {
 	private final PatientRepository patientRepo;
@@ -19,18 +20,18 @@ public class PatientController {
 		this.patientRepo = patientRepo;
 	}
 	
-	@RequestMapping("/patient/list")
+	@RequestMapping("/list")
 	public String showPatientList (Model model) {
 		model.addAttribute("patients", patientRepo.findAll());
 		return "patients";
 	}
 	
-	@RequestMapping(value = "/patient/add", method = RequestMethod.GET)
+	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String showAddPatient () {
 		return "add-patient";
 	}
 	
-	@RequestMapping(value = "/patient/add", method = RequestMethod.POST)
+	@RequestMapping(value = "/add", method = RequestMethod.POST)
 	public String addPatient (@ModelAttribute Patient patient) {
 		patientRepo.save(patient);
 		return "redirect:/patient/list";
