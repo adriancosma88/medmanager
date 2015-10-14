@@ -27,7 +27,17 @@ public class LoginController {
 	public String doLogin(@RequestParam String userName,
 			@RequestParam String password,
 			Model model) {
-		User user = userRepo.findByUserName(userName).get(0);
+		User user = null;
+		try {
+			user = userRepo.findFirstByUserName(userName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		if (user == null) {
+			model.addAttribute("error", "invalid login!");
+			return "login";
+		}
 		
 		if (password.equalsIgnoreCase(user.getPassword())) {
 			model.addAttribute("name", userName);
