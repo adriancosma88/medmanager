@@ -3,6 +3,9 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <title>Spring Security Example </title>
+        <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen" />
     </head>
     <body>
         <div th:if="${error}">
@@ -11,10 +14,38 @@
         <div th:if="${logout}">
             You have been logged out.
         </div>
-        <form th:action="@{/login}" method="post">
-            <div><label> User Name : <input type="text" name="userName"/> </label></div>
-            <div><label> Password: <input type="password" name="password"/> </label></div>
-            <div><input type="submit" value="Sign In"/></div>
-        </form>
+        <form class="form-horizontal" th:action="@{/login}" method="post">
+		<fieldset>		
+		<!-- Form Name -->
+		<legend>Login</legend>
+
+		<!-- Text input-->
+		<div class="form-group">
+			<label class="col-md-4 control-label" for="user">User:</label>
+			<div class="col-md-4">
+				<input id="userName" name="userName" placeholder="user name"
+					class="form-control input-md" type="text"/>
+			</div>
+		</div>
+
+		<!-- Password input-->
+		<div class="form-group">
+			<label class="col-md-4 control-label" for="password">Password:</label>
+			<div class="col-md-4">
+				<input id="password" name="password" placeholder="password"
+					class="form-control input-md" type="password"/>
+			</div>
+		</div>
+
+		<!-- Button -->
+		<div class="form-group">
+			<div class="col-md-12 text-center">
+				<input type="submit" class="btn btn-primary" value="Sign In"/>
+			</div>
+		</div>
+		
+		</fieldset>
+		</form>
+        
     </body>
 </html>
