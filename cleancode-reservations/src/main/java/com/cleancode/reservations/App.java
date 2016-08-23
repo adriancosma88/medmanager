@@ -1,5 +1,6 @@
 package com.cleancode.reservations;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -13,7 +14,12 @@ import java.util.Scanner;
  */
 public class App {
     public static void main( String[] args ) {
-    	/* ++++----++++ Adding persons ++++----++++ */
+    	System.out.println(doLogic());
+    }
+
+	@SuppressWarnings({ "resource"})
+	private static String doLogic() {
+		/* ++++----++++ Adding persons ++++----++++ */
         List<Person> list = Arrays.asList(
         		new Person("Adrian", "Cosma", LocalDate.of(1988, 9, 4), true, "adrian.cosma@asentinel.com"),
         		new Person("Bogdan", "Popescu", LocalDate.of(1988, 7, 18), true, "bogdan.popescu@asentinel.com"),
@@ -24,7 +30,8 @@ public class App {
         List<Movie> list2 = Arrays.asList(
         		new Movie("Ice Age 3", "Comedy", true, Arrays.asList(LocalTime.of(12, 15), LocalTime.of(18, 45), LocalTime.of(20, 00))),
         		new Movie("The Avangers", "Action", true, Arrays.asList(LocalTime.of(18, 15), LocalTime.of(19, 45), LocalTime.of(21, 15))),
-        		new Movie("Hangover 2", "Comedy", false, Arrays.asList(LocalTime.of(16, 45), LocalTime.of(19, 00), LocalTime.of(20, 15), LocalTime.of(21, 30)))
+        		new Movie("Hangover 2", "comedy", false, Arrays.asList(LocalTime.of(16, 45), LocalTime.of(19, 00), LocalTime.of(20, 15), LocalTime.of(21, 30))),
+        		new Movie("The Millers", "Conedy", false, Arrays.asList(LocalTime.of(14, 45), LocalTime.of(16, 30), LocalTime.of(20, 00), LocalTime.of(21, 15)))
         		);
         
         /* ++++----++++ Application logic ++++----++++ */
@@ -33,16 +40,16 @@ public class App {
         Person prs = null;
         for(int i = 0 ; i < 3 ; i++){
         System.out.println("Please enter your email for login.");
-        System.out.println("email: ");
+        System.out.println("email:");
         String e = s.next();
         for (Person p : list)
         	if (p.email.equalsIgnoreCase(e))
         		{prs = p;break;}
-        if(prs == null) System.out.println("Account does not exist."); else break;
+        if(prs == null) System.out.println("Account " + e + " does not exist."); else break;
         }
         if(prs != null){
         	System.out.println(prs);}
-        else { System.out.println("3 wrong attemps. Application will exit."); System.exit(0); }
+        else { return "3 wrong attemps. Application will exit."; }
         
         //Now moving to the real awesome part. THis where you see the list of movies. :D
         System.out.println("Please choose the movie you want to see:");
@@ -58,28 +65,28 @@ public class App {
         }
         int h = s.nextInt();
         s.close();
-        LocalTime hour = list2.get(m-1).getHours().get(h);
+        LocalTime hour = list2.get(m-1).getHours().get(h-1);
         
         //Now you compute the price using an algorithm.
-        double price = 0.0;
+        BigDecimal price = BigDecimal.valueOf(0);
         if (hour.isBefore(LocalTime.of(17, 0)))
 			if (!mov.is_3d())
-				price = 16.5;
+				price = BigDecimal.valueOf(16.5);
 			else
-				price = 19.0;
+				price = BigDecimal.valueOf(19.0);
         else 
         	if (!mov.is_3d())
-        		price = 23.0;
+        		price = BigDecimal.valueOf(23.0);
         	else
-        		price = 27.0;
+        		price = BigDecimal.valueOf(27.0);
         
         //Here we apply discounts seniors an youngsters. The date of birth is taken from the person logged in at line
         if (prs.date.until(LocalDate.now(), ChronoUnit.YEARS) < 18)
-        	price = price * 0.8;
+        	price = price.multiply(BigDecimal.valueOf(0.8));
         
         if (prs.date.until(LocalDate.now(), ChronoUnit.YEARS) > 60)
-        	price = price * 0.7;
+        	price = price.multiply(BigDecimal.valueOf(0.7));
         
-        System.out.println("The price of your ticket is: " + price);
-    }
+        return "The price of your ticket is: " + price;
+	}
 }
