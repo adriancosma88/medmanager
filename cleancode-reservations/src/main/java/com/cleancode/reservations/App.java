@@ -14,6 +14,7 @@ import java.util.Scanner;
  *
  */
 public class App {
+	private static final String COMEDY = "Comedy";
 	private static final List<Person> PERSON_LIST = getPersonTestData();
 	private static final List<Movie> MOVIE_LIST = getMoviesTestData();
 	
@@ -138,13 +139,13 @@ public class App {
 	private static List<Movie> getMoviesTestData() {
 		return Collections.unmodifiableList(
 					Arrays.asList(
-						new Movie("Ice Age 3", "Comedy", true, 
+						new Movie("Ice Age 3", COMEDY, true, 
 								Arrays.asList(LocalTime.of(12, 15), LocalTime.of(18, 45), LocalTime.of(20, 00))),
 						new Movie("The Avangers", "Action", true,
 								Arrays.asList(LocalTime.of(18, 15), LocalTime.of(19, 45), LocalTime.of(21, 15))),
-						new Movie("Hangover 2", "comedy", false,
+						new Movie("Hangover 2", COMEDY, false,
 								Arrays.asList(LocalTime.of(16, 45), LocalTime.of(19, 00), LocalTime.of(20, 15),	LocalTime.of(21, 30))),
-						new Movie("The Millers", "Conedy", false,
+						new Movie("The Millers", COMEDY, false,
 								Arrays.asList(LocalTime.of(14, 45), LocalTime.of(16, 30), LocalTime.of(20, 00), LocalTime.of(21, 15)))));
 	}
 

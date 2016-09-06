@@ -52,8 +52,8 @@ public class AppTestCase {
 				"Please choose the movie you want to see:\r\n" + 
 				"1. Ice Age 3 3D - Comedy: 12:15 18:45 20:00 \r\n" + 
 				"2. The Avangers 3D - Action: 18:15 19:45 21:15 \r\n" + 
-				"3. Hangover 2 - comedy: 16:45 19:00 20:15 21:30 \r\n" + 
-				"4. The Millers - Conedy: 14:45 16:30 20:00 21:15 \r\n" + 
+				"3. Hangover 2 - Comedy: 16:45 19:00 20:15 21:30 \r\n" + 
+				"4. The Millers - Comedy: 14:45 16:30 20:00 21:15 \r\n" + 
 				"1. 14:45\r\n" + 
 				"2. 16:30\r\n" + 
 				"3. 20:00\r\n" + 
@@ -75,8 +75,8 @@ public class AppTestCase {
 				"Please choose the movie you want to see:\r\n" + 
 				"1. Ice Age 3 3D - Comedy: 12:15 18:45 20:00 \r\n" + 
 				"2. The Avangers 3D - Action: 18:15 19:45 21:15 \r\n" + 
-				"3. Hangover 2 - comedy: 16:45 19:00 20:15 21:30 \r\n" + 
-				"4. The Millers - Conedy: 14:45 16:30 20:00 21:15 \r\n" +
+				"3. Hangover 2 - Comedy: 16:45 19:00 20:15 21:30 \r\n" + 
+				"4. The Millers - Comedy: 14:45 16:30 20:00 21:15 \r\n" +
 				"1. 16:45\r\n" + 
 				"2. 19:00\r\n" + 
 				"3. 20:15\r\n" + 
