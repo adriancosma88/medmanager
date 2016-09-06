@@ -51,7 +51,7 @@ public class App {
         	System.out.println(prs);}
         else { return "3 wrong attemps. Application will exit."; }
         
-        //Now moving to the real awesome part. THis where you see the list of movies. :D
+        //Now moving to the real awesome part. THis is where you see the list of movies. :D
         System.out.println("Please choose the movie you want to see:");
         for(int i=0;i<list2.size();i++)
         {
@@ -80,7 +80,8 @@ public class App {
         	else
         		price = BigDecimal.valueOf(27.0);
         
-        //Here we apply discounts seniors an youngsters. The date of birth is taken from the person logged in at line
+        //Here we apply discounts seniors an youngsters.
+        //The date of birth is taken from the person logged in at line 47
         if (prs.date.until(LocalDate.now(), ChronoUnit.YEARS) < 18)
         	price = price.multiply(BigDecimal.valueOf(0.8));
         
