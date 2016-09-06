@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
@@ -13,19 +14,19 @@ import java.util.Scanner;
  *
  */
 public class App {
+	private static final List<Person> PERSON_LIST = getPersonTestData();
+	private static final List<Movie> MOVIE_LIST = getMoviesTestData();
+	
     public static void main( String[] args ) {
     	System.out.println(doLogic());
     }
 
 	private static String doLogic() {
-        List<Person> personList = getPersonTestData();
-        List<Movie> movieList = getMoviesTestData();
-        
         //if you write an email that does not exist for 3 times the application will exit and you need to start it again in order to make another reservation. This can consume time and you don't want that, do you?
         Scanner scanner = new Scanner(System.in);
         Person person = null;
         
-		person = getLoggedInPersonFromEmail(personList, scanner, person);
+		person = getLoggedInPersonFromEmail(scanner, person);
 		
 		if (person != null) {
 			displayPersonIsOkMessage(person);
@@ -33,18 +34,18 @@ public class App {
 			return getApplicationExitMessage();
 		}
         
-        int movieInputIndex = getSelectedMovieIndex(movieList, scanner);
+        int movieInputIndex = getSelectedMovieIndex(scanner);
         
-        LocalTime hour = getSelectedMovieHour(movieList, scanner, movieInputIndex);
+        LocalTime hour = getSelectedMovieHour(scanner, movieInputIndex);
         
-        BigDecimal price = computeSelectedMoviePrice(movieList, person, movieInputIndex, hour);
+        BigDecimal price = computeSelectedMoviePrice(person, movieInputIndex, hour);
         
         return "The price of your ticket is: " + price;
 	}
 
-	private static BigDecimal computeSelectedMoviePrice(List<Movie> movieList, Person person, int movieInputIndex,
+	private static BigDecimal computeSelectedMoviePrice(Person person, int movieInputIndex,
 			LocalTime hour) {
-		BigDecimal price = getRegularMoviePrice(movieList, movieInputIndex, hour);
+		BigDecimal price = getRegularMoviePrice(movieInputIndex, hour);
         
         price = applyAgeDiscount(person, price);
 		return price;
@@ -71,58 +72,58 @@ public class App {
 		return price;
 	}
 
-	private static BigDecimal getRegularMoviePrice(List<Movie> movieList, int movieInputIndex, LocalTime hour) {
+	private static BigDecimal getRegularMoviePrice(int movieInputIndex, LocalTime hour) {
 		BigDecimal price = BigDecimal.valueOf(0);
 		if (hour.isBefore(LocalTime.of(17, 0))) {
-			price = getDayTimeMoviePrice(movieList, movieInputIndex);
+			price = getDayTimeMoviePrice(movieInputIndex);
 		} else {
-			price = getEveningMoviePrice(movieList, movieInputIndex);
+			price = getEveningMoviePrice(movieInputIndex);
 		}
 		return price;
 	}
 
-	private static BigDecimal getEveningMoviePrice(List<Movie> movieList, int movieInputIndex) {
+	private static BigDecimal getEveningMoviePrice(int movieInputIndex) {
 		BigDecimal price;
-		if (!movieList.get(movieInputIndex-1).is_3d())
+		if (!MOVIE_LIST.get(movieInputIndex-1).is_3d())
 			price = BigDecimal.valueOf(23.0);
 		else
 			price = BigDecimal.valueOf(27.0);
 		return price;
 	}
 
-	private static BigDecimal getDayTimeMoviePrice(List<Movie> movieList, int movieInputIndex) {
+	private static BigDecimal getDayTimeMoviePrice(int movieInputIndex) {
 		BigDecimal price;
-		if (!movieList.get(movieInputIndex-1).is_3d())
+		if (!MOVIE_LIST.get(movieInputIndex-1).is_3d())
 			price = BigDecimal.valueOf(16.5);
 		else
 			price = BigDecimal.valueOf(19.0);
 		return price;
 	}
 
-	private static int getSelectedMovieIndex(List<Movie> movieList, Scanner scanner) {
-		displayMovieList(movieList);        
+	private static int getSelectedMovieIndex(Scanner scanner) {
+		displayMovieList();        
         int movieInputIndex = scanner.nextInt();
 		return movieInputIndex;
 	}
 
-	private static LocalTime getSelectedMovieHour(List<Movie> movieList, Scanner scanner, int movieInputIndex) {
-		displaySelectedMovieHours(movieList, movieInputIndex);
+	private static LocalTime getSelectedMovieHour(Scanner scanner, int movieInputIndex) {
+		displaySelectedMovieHours(movieInputIndex);
         int h = scanner.nextInt();
         scanner.close();
-        LocalTime hour = movieList.get(movieInputIndex-1).getHours().get(h-1);
+        LocalTime hour = MOVIE_LIST.get(movieInputIndex-1).getHours().get(h-1);
 		return hour;
 	}
 
-	private static void displaySelectedMovieHours(List<Movie> movieList, int movieInputIndex) {
-		for (int i=0; i<movieList.get(movieInputIndex-1).getHours().size() ; i++) {
-        	System.out.println(i + 1 + ". " + movieList.get(movieInputIndex-1).getHours().get(i));
+	private static void displaySelectedMovieHours(int movieInputIndex) {
+		for (int i=0; i < MOVIE_LIST.get(movieInputIndex-1).getHours().size() ; i++) {
+        	System.out.println(i + 1 + ". " + MOVIE_LIST.get(movieInputIndex-1).getHours().get(i));
         }
 	}
 
-	private static void displayMovieList(List<Movie> list2) {
+	private static void displayMovieList() {
 		System.out.println("Please choose the movie you want to see:");
-        for(int i=0; i < list2.size() ; i++) {
-        	System.out.println(i + 1 + ". " + list2.get(i));
+        for(int i=0; i < MOVIE_LIST.size() ; i++) {
+        	System.out.println(i + 1 + ". " + MOVIE_LIST.get(i));
         }
 	}
 
@@ -135,28 +136,32 @@ public class App {
 	}
 
 	private static List<Movie> getMoviesTestData() {
-		return Arrays.asList(
-        		new Movie("Ice Age 3", "Comedy", true, Arrays.asList(LocalTime.of(12, 15), LocalTime.of(18, 45), LocalTime.of(20, 00))),
-        		new Movie("The Avangers", "Action", true, Arrays.asList(LocalTime.of(18, 15), LocalTime.of(19, 45), LocalTime.of(21, 15))),
-        		new Movie("Hangover 2", "comedy", false, Arrays.asList(LocalTime.of(16, 45), LocalTime.of(19, 00), LocalTime.of(20, 15), LocalTime.of(21, 30))),
-        		new Movie("The Millers", "Conedy", false, Arrays.asList(LocalTime.of(14, 45), LocalTime.of(16, 30), LocalTime.of(20, 00), LocalTime.of(21, 15)))
-        		);
+		return Collections.unmodifiableList(
+					Arrays.asList(
+						new Movie("Ice Age 3", "Comedy", true, 
+								Arrays.asList(LocalTime.of(12, 15), LocalTime.of(18, 45), LocalTime.of(20, 00))),
+						new Movie("The Avangers", "Action", true,
+								Arrays.asList(LocalTime.of(18, 15), LocalTime.of(19, 45), LocalTime.of(21, 15))),
+						new Movie("Hangover 2", "comedy", false,
+								Arrays.asList(LocalTime.of(16, 45), LocalTime.of(19, 00), LocalTime.of(20, 15),	LocalTime.of(21, 30))),
+						new Movie("The Millers", "Conedy", false,
+								Arrays.asList(LocalTime.of(14, 45), LocalTime.of(16, 30), LocalTime.of(20, 00), LocalTime.of(21, 15)))));
 	}
 
 	private static List<Person> getPersonTestData() {
-		return Arrays.asList(
-        		new Person("Adrian", "Cosma", LocalDate.of(1988, 9, 4), true, "adrian.cosma@asentinel.com"),
-        		new Person("Bogdan", "Popescu", LocalDate.of(1988, 7, 18), true, "bogdan.popescu@asentinel.com"),
-        		new Person("Sorin", "Slavic", LocalDate.of(2007, 8, 23), true, "sorin.slavic@asentinel.com"),
-        		new Person("Denisa", "Cirstescu", LocalDate.of(1989, 8, 28), false, "denisa.cirstescu@asentinel.com"),
-        		new Person("Sorin", "Iulus", LocalDate.of(1943, 3, 2), true, "sorin.iulus@asentinel.com"));
+		return Collections.unmodifiableList(Arrays
+				.asList(new Person("Adrian", "Cosma", LocalDate.of(1988, 9, 4), true, "adrian.cosma@asentinel.com"),
+						new Person("Bogdan", "Popescu", LocalDate.of(1988, 7, 18), true, "bogdan.popescu@asentinel.com"),
+						new Person("Sorin", "Slavic", LocalDate.of(2007, 8, 23), true, "sorin.slavic@asentinel.com"),
+						new Person("Denisa", "Cirstescu", LocalDate.of(1989, 8, 28), false, "denisa.cirstescu@asentinel.com"),
+						new Person("Sorin", "Iulus", LocalDate.of(1943, 3, 2), true, "sorin.iulus@asentinel.com")));
 	}
 
-	private static Person getLoggedInPersonFromEmail(List<Person> list, Scanner scanner, Person person) {
+	private static Person getLoggedInPersonFromEmail(Scanner scanner, Person person) {
 		for (int i = 0; i < 3; i++) {
 			String emailInput = getEmailInput(scanner);
 			
-			for (Person p : list) {
+			for (Person p : PERSON_LIST) {
 				if (p.email.equalsIgnoreCase(emailInput)) {
 					person = p;
 					break;
