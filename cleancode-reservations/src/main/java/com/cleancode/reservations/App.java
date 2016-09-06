@@ -33,34 +33,76 @@ public class App {
 			return getApplicationExitMessage();
 		}
         
-        displayMovieList(movieList);        
-        int movieInputIndex = scanner.nextInt();
-        Movie selectedMovie = movieList.get(movieInputIndex-1);
+        int movieInputIndex = getSelectedMovieIndex(movieList, scanner);
         
         LocalTime hour = getSelectedMovieHour(movieList, scanner, movieInputIndex);
         
-        //Now you compute the price using an algorithm.
-        BigDecimal price = BigDecimal.valueOf(0);
-        if (hour.isBefore(LocalTime.of(17, 0)))
-			if (!selectedMovie.is_3d())
-				price = BigDecimal.valueOf(16.5);
-			else
-				price = BigDecimal.valueOf(19.0);
-        else 
-        	if (!selectedMovie.is_3d())
-        		price = BigDecimal.valueOf(23.0);
-        	else
-        		price = BigDecimal.valueOf(27.0);
-        
-        //Here we apply discounts seniors an youngsters.
-        //The date of birth is taken from the person logged in at line 47
-        if (person.date.until(LocalDate.now(), ChronoUnit.YEARS) < 18)
-        	price = price.multiply(BigDecimal.valueOf(0.8));
-        
-        if (person.date.until(LocalDate.now(), ChronoUnit.YEARS) > 60)
-        	price = price.multiply(BigDecimal.valueOf(0.7));
+        BigDecimal price = computeSelectedMoviePrice(movieList, person, movieInputIndex, hour);
         
         return "The price of your ticket is: " + price;
+	}
+
+	private static BigDecimal computeSelectedMoviePrice(List<Movie> movieList, Person person, int movieInputIndex,
+			LocalTime hour) {
+		BigDecimal price = getRegularMoviePrice(movieList, movieInputIndex, hour);
+        
+        price = applyAgeDiscount(person, price);
+		return price;
+	}
+
+	private static BigDecimal applyAgeDiscount(Person person, BigDecimal price) {
+		price = applyYoungPeopleDiscount(person, price);
+        
+        price = applySeniorsDiscount(person, price);
+		return price;
+	}
+
+	private static BigDecimal applySeniorsDiscount(Person person, BigDecimal price) {
+		if (person.date.until(LocalDate.now(), ChronoUnit.YEARS) > 60) {
+        	price = price.multiply(BigDecimal.valueOf(0.7));
+        }
+		return price;
+	}
+
+	private static BigDecimal applyYoungPeopleDiscount(Person person, BigDecimal price) {
+		if (person.date.until(LocalDate.now(), ChronoUnit.YEARS) < 18) {
+        	price = price.multiply(BigDecimal.valueOf(0.8));
+        }
+		return price;
+	}
+
+	private static BigDecimal getRegularMoviePrice(List<Movie> movieList, int movieInputIndex, LocalTime hour) {
+		BigDecimal price = BigDecimal.valueOf(0);
+		if (hour.isBefore(LocalTime.of(17, 0))) {
+			price = getDayTimeMoviePrice(movieList, movieInputIndex);
+		} else {
+			price = getEveningMoviePrice(movieList, movieInputIndex);
+		}
+		return price;
+	}
+
+	private static BigDecimal getEveningMoviePrice(List<Movie> movieList, int movieInputIndex) {
+		BigDecimal price;
+		if (!movieList.get(movieInputIndex-1).is_3d())
+			price = BigDecimal.valueOf(23.0);
+		else
+			price = BigDecimal.valueOf(27.0);
+		return price;
+	}
+
+	private static BigDecimal getDayTimeMoviePrice(List<Movie> movieList, int movieInputIndex) {
+		BigDecimal price;
+		if (!movieList.get(movieInputIndex-1).is_3d())
+			price = BigDecimal.valueOf(16.5);
+		else
+			price = BigDecimal.valueOf(19.0);
+		return price;
+	}
+
+	private static int getSelectedMovieIndex(List<Movie> movieList, Scanner scanner) {
+		displayMovieList(movieList);        
+        int movieInputIndex = scanner.nextInt();
+		return movieInputIndex;
 	}
 
 	private static LocalTime getSelectedMovieHour(List<Movie> movieList, Scanner scanner, int movieInputIndex) {
