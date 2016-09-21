@@ -23,7 +23,6 @@ public class App {
     }
 
 	private static String doLogic() {
-        //if you write an email that does not exist for 3 times the application will exit and you need to start it again in order to make another reservation. This can consume time and you don't want that, do you?
         Scanner scanner = new Scanner(System.in);
         Person person = null;
         
